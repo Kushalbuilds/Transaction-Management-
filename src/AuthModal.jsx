@@ -11,7 +11,10 @@ import {
   CheckCircle2,
   AlertCircle,
   Building2,
-  Mail
+  Mail,
+  KeyRound,
+  Copy,
+  Check
 } from 'lucide-react';
 import './AuthModal.css';
 
@@ -48,7 +51,7 @@ export function setCurrentUser(user) {
 }
 
 export default function AuthModal({ onLoginSuccess }) {
-  // Mode: 'login' | 'signup'
+  // Mode: 'login' | 'signup' | 'forgot'
   const [mode, setMode] = useState('login');
 
   // Form states for login (clean, no pre-filled demo data)
@@ -64,6 +67,12 @@ export default function AuthModal({ onLoginSuccess }) {
   const [signupConfirmPassword, setSignupConfirmPassword] = useState('');
   const [showSignupPassword, setShowSignupPassword] = useState(false);
   const [showSignupConfirmPassword, setShowSignupConfirmPassword] = useState(false);
+
+  // Form states for forgot password recovery
+  const [forgotIdentifier, setForgotIdentifier] = useState('');
+  const [recoveredUser, setRecoveredUser] = useState(null);
+  const [showRecoveredPassword, setShowRecoveredPassword] = useState(true);
+  const [copiedPassword, setCopiedPassword] = useState(false);
 
   // Feedback states
   const [errorMsg, setErrorMsg] = useState('');
@@ -101,7 +110,7 @@ export default function AuthModal({ onLoginSuccess }) {
     });
 
     if (!found) {
-      setErrorMsg('Invalid username/phone or password. Please check your credentials or create an account.');
+      setErrorMsg('Invalid username/phone or password. Please check your credentials, or click "Forgot password?".');
       return;
     }
 
@@ -110,6 +119,64 @@ export default function AuthModal({ onLoginSuccess }) {
     setTimeout(() => {
       onLoginSuccess(found);
     }, 450);
+  };
+
+  // Handle Forgot Password Submit (Retrieve original password)
+  const handleForgotSubmit = (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setSuccessMsg('');
+    setRecoveredUser(null);
+    setCopiedPassword(false);
+
+    const identifier = forgotIdentifier.trim();
+    if (!identifier) {
+      setErrorMsg('Please enter your registered username or phone number');
+      return;
+    }
+
+    const users = getStoredUsers();
+    const cleanPhoneInput = identifier.replace(/\D/g, '');
+
+    const found = users.find((u) => {
+      const matchUser = u.username && u.username.toLowerCase() === identifier.toLowerCase();
+      const matchPhone = cleanPhoneInput && u.phone && u.phone.replace(/\D/g, '') === cleanPhoneInput;
+      return matchUser || matchPhone;
+    });
+
+    if (!found) {
+      setErrorMsg(`No account found matching "${identifier}". Please check for typos or create a new account.`);
+      return;
+    }
+
+    // Retrieve original password (from initial registration)
+    const originalPass = found.originalPassword || found.password;
+    setRecoveredUser({ ...found, originalPassword: originalPass });
+    setSuccessMsg('Account verified! Here is your original registration password.');
+  };
+
+  // Handle Log In with Recovered Password
+  const handleLoginWithRecovered = () => {
+    if (!recoveredUser) return;
+    const pwd = recoveredUser.originalPassword || recoveredUser.password;
+    setLoginIdentifier(recoveredUser.username || recoveredUser.phone);
+    setLoginPassword(pwd);
+    setSuccessMsg(`Welcome back, ${recoveredUser.fullName || recoveredUser.username}!`);
+    setCurrentUser(recoveredUser);
+    setTimeout(() => {
+      onLoginSuccess(recoveredUser);
+    }, 450);
+  };
+
+  // Copy password to clipboard
+  const handleCopyPassword = () => {
+    const pwd = recoveredUser?.originalPassword || recoveredUser?.password;
+    if (!pwd) return;
+    try {
+      navigator.clipboard.writeText(pwd);
+      setCopiedPassword(true);
+      setTimeout(() => setCopiedPassword(false), 2000);
+    } catch {}
   };
 
   // Handle Signup Submit
@@ -175,6 +242,7 @@ export default function AuthModal({ onLoginSuccess }) {
       username: signupUsername.trim(),
       phone: cleanPhone,
       password: signupPassword,
+      originalPassword: signupPassword, // Preserves the very first password
       role: 'Administrator',
       createdAt: new Date().toISOString()
     };
@@ -213,6 +281,7 @@ export default function AuthModal({ onLoginSuccess }) {
                 setMode('login');
                 setErrorMsg('');
                 setSuccessMsg('');
+                setRecoveredUser(null);
               }}
             >
               <LogIn size={16} />
@@ -225,11 +294,26 @@ export default function AuthModal({ onLoginSuccess }) {
                 setMode('signup');
                 setErrorMsg('');
                 setSuccessMsg('');
+                setRecoveredUser(null);
               }}
             >
               <UserPlus size={16} />
               <span>Create Account</span>
             </button>
+            {mode === 'forgot' && (
+              <button
+                type="button"
+                className="mode-tab active"
+                onClick={() => {
+                  setMode('forgot');
+                  setErrorMsg('');
+                  setSuccessMsg('');
+                }}
+              >
+                <KeyRound size={16} />
+                <span>Forgot Password</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -248,7 +332,7 @@ export default function AuthModal({ onLoginSuccess }) {
         )}
 
         {/* ─── LOGIN FORM ─── */}
-        {mode === 'login' ? (
+        {mode === 'login' && (
           <form className="auth-form" onSubmit={handleLoginSubmit}>
             <div className="form-group">
               <label className="input-label" htmlFor="login-identifier">
@@ -270,9 +354,24 @@ export default function AuthModal({ onLoginSuccess }) {
             </div>
 
             <div className="form-group">
-              <label className="input-label" htmlFor="login-password">
-                Password
-              </label>
+              <div className="form-group-header">
+                <label className="input-label" htmlFor="login-password">
+                  Password
+                </label>
+                <button
+                  type="button"
+                  className="forgot-password-link"
+                  onClick={() => {
+                    setMode('forgot');
+                    setForgotIdentifier(loginIdentifier || '');
+                    setErrorMsg('');
+                    setSuccessMsg('');
+                    setRecoveredUser(null);
+                  }}
+                >
+                  Forgot password?
+                </button>
+              </div>
               <div className="input-wrapper">
                 <Lock className="input-icon" size={18} />
                 <input
@@ -310,14 +409,154 @@ export default function AuthModal({ onLoginSuccess }) {
                   setMode('signup');
                   setErrorMsg('');
                   setSuccessMsg('');
+                  setRecoveredUser(null);
                 }}
               >
                 Sign up here
               </button>
             </div>
           </form>
-        ) : (
-          /* ─── SIGNUP FORM ─── */
+        )}
+
+        {/* ─── FORGOT PASSWORD FORM & RECOVERY ─── */}
+        {mode === 'forgot' && (
+          <form className="auth-form" onSubmit={handleForgotSubmit}>
+            {!recoveredUser ? (
+              <>
+                <div className="forgot-instruction">
+                  <KeyRound className="forgot-icon" size={20} />
+                  <p>
+                    Enter your registered <strong>Username</strong> or <strong>Phone Number</strong>. We will look up your account and retrieve the very first password you created at registration.
+                  </p>
+                </div>
+
+                <div className="form-group">
+                  <label className="input-label" htmlFor="forgot-identifier">
+                    Username or Phone Number
+                  </label>
+                  <div className="input-wrapper">
+                    <User className="input-icon" size={18} />
+                    <input
+                      id="forgot-identifier"
+                      type="text"
+                      className="auth-input"
+                      placeholder="e.g. your username or 10-digit mobile number"
+                      value={forgotIdentifier}
+                      onChange={(e) => setForgotIdentifier(e.target.value)}
+                      autoFocus
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" className="auth-primary-btn">
+                  <span>Get My Original Password</span>
+                  <ArrowRight size={18} />
+                </button>
+              </>
+            ) : (
+              <div className="recovered-password-card">
+                <div className="recovered-header">
+                  <div className="recovered-check">
+                    <Check size={18} />
+                  </div>
+                  <div>
+                    <h4>Account Located!</h4>
+                    <p>Here is your original account password from registration.</p>
+                  </div>
+                </div>
+
+                <div className="recovered-details">
+                  <div className="recovered-detail-row">
+                    <span>Full Name:</span>
+                    <strong>{recoveredUser.fullName || 'Registered User'}</strong>
+                  </div>
+                  <div className="recovered-detail-row">
+                    <span>Username:</span>
+                    <strong>{recoveredUser.username}</strong>
+                  </div>
+                  {recoveredUser.phone && (
+                    <div className="recovered-detail-row">
+                      <span>Phone:</span>
+                      <strong>{recoveredUser.phone}</strong>
+                    </div>
+                  )}
+                </div>
+
+                <div className="recovered-pwd-box">
+                  <span className="recovered-pwd-label">Original Registration Password</span>
+                  <div className="recovered-pwd-val-row">
+                    <span className="recovered-pwd-text">
+                      {showRecoveredPassword
+                        ? (recoveredUser.originalPassword || recoveredUser.password)
+                        : '••••••••••••'}
+                    </span>
+                    <div className="recovered-pwd-actions">
+                      <button
+                        type="button"
+                        className="pwd-action-btn"
+                        title={showRecoveredPassword ? 'Hide password' : 'Show password'}
+                        onClick={() => setShowRecoveredPassword(!showRecoveredPassword)}
+                      >
+                        {showRecoveredPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                        <span>{showRecoveredPassword ? 'Hide' : 'Show'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="pwd-action-btn copy"
+                        title="Copy password to clipboard"
+                        onClick={handleCopyPassword}
+                      >
+                        {copiedPassword ? <Check size={14} /> : <Copy size={14} />}
+                        <span>{copiedPassword ? 'Copied!' : 'Copy'}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="auth-primary-btn"
+                  onClick={handleLoginWithRecovered}
+                >
+                  <span>Log In With This Password</span>
+                  <ArrowRight size={18} />
+                </button>
+
+                <button
+                  type="button"
+                  className="pwd-action-btn"
+                  style={{ alignSelf: 'center', marginTop: 4, background: 'transparent', border: 'none', color: '#64748b' }}
+                  onClick={() => {
+                    setRecoveredUser(null);
+                    setErrorMsg('');
+                    setSuccessMsg('');
+                  }}
+                >
+                  Look up a different account
+                </button>
+              </div>
+            )}
+
+            <div className="auth-footer-prompt">
+              <span>Remembered your password?</span>
+              <button
+                type="button"
+                className="auth-link-btn"
+                onClick={() => {
+                  setMode('login');
+                  setErrorMsg('');
+                  setSuccessMsg('');
+                  setRecoveredUser(null);
+                }}
+              >
+                Back to Sign in
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* ─── SIGNUP FORM ─── */}
+        {mode === 'signup' && (
           <form className="auth-form" onSubmit={handleSignupSubmit}>
             <div className="form-group">
               <label className="input-label" htmlFor="signup-name">

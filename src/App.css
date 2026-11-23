@@ -128,6 +128,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .method-badge.cash { background: #eff6ff; color: #1d4ed8; }
 .method-badge.upi { background: #fff7ed; color: #c2410c; }
 .method-badge.cheque, .method-badge.check { background: #fef2f2; color: #b91c1c; }
+.method-badge.rtgs { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
 .method-badge.bank-transfer { background: #f1f5f9; color: #475569; }
 .row-actions { display: flex; align-items: center; gap: 5px; }
 .mini-icon, .icon-button { display: inline-grid; place-items: center; border: 1px solid #e5ebf3; background: #fff; color: #68809d; border-radius: 7px; width: 29px; height: 28px; transition: .15s ease; cursor: pointer; }
@@ -980,6 +981,11 @@ tbody tr:last-child td { border-bottom: 0; }
   background: #1e293b !important;
   color: #cbd5e1 !important;
 }
+[data-theme="dark"] .method-badge.rtgs {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #6ee7b7 !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
 [data-theme="dark"] .amount-cell {
   color: #f8fafc !important;
 }
@@ -1168,6 +1174,1115 @@ tbody tr:last-child td { border-bottom: 0; }
 [data-theme="dark"] .content-foot {
   color: #64748b !important;
 }
+
+/* ── Searchable Combobox Dropdown ── */
+.searchable-select {
+  position: relative;
+  width: 100%;
+}
+
+.searchable-select-trigger {
+  width: 100%;
+  height: 39px;
+  border: 1px solid #dfe7f1;
+  border-radius: 7px;
+  background: #fff;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: #2b4260;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  user-select: none;
+}
+
+.searchable-select-trigger:hover {
+  border-color: #bcd5f5;
+  background: #fbfdff;
+}
+
+.searchable-select-trigger.open {
+  border-color: #2674f5;
+  box-shadow: 0 0 0 3px rgba(38, 116, 245, 0.12);
+}
+
+.searchable-select-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.searchable-select-placeholder {
+  color: #9aa8ba;
+  font-weight: normal;
+}
+
+.searchable-select-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #d8e3f0;
+  border-radius: 9px;
+  box-shadow: 0 12px 28px -4px rgba(16, 36, 62, 0.18), 0 4px 10px rgba(0, 0, 0, 0.04);
+  z-index: 120;
+  overflow: hidden;
+  animation: modal-in 0.15s ease-out;
+}
+
+.searchable-select-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid #edf2f8;
+  background: #f8fafc;
+}
+
+.searchable-select-search input {
+  width: 100%;
+  height: 30px;
+  border: 1px solid #e1e8f2;
+  border-radius: 6px;
+  padding: 0 9px;
+  font-size: 11px;
+  color: #1e293b;
+  outline: none;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+
+.searchable-select-search input:focus {
+  border-color: #2674f5;
+  box-shadow: 0 0 0 2px rgba(38, 116, 245, 0.1);
+}
+
+.searchable-select-options {
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.searchable-select-option {
+  width: 100%;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #334155;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.12s ease;
+}
+
+.searchable-select-option:hover {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.searchable-select-option.selected {
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.searchable-select-empty {
+  padding: 14px 10px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 10.5px;
+}
+
+/* ── Firm Projects & Spending Breakdown UI ── */
+.firm-projects-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.firm-projects-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.project-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  color: #1e40af;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.project-chip:hover {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+  transform: translateY(-1px);
+}
+
+.project-chip.active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.project-chip .chip-count {
+  font-size: 9.5px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.project-chip.active .chip-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.project-badge-tag {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  background: #e0e7ff;
+  color: #3730a3;
+  letter-spacing: 0.2px;
+}
+
+.firm-spending-summary-card {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 14px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .firm-spending-summary-card {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.firm-metric-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.firm-metric-lbl {
+  font-size: 9.5px;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.firm-metric-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* Dark mode for searchable select and projects UI */
+[data-theme="dark"] .searchable-select-trigger {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+[data-theme="dark"] .searchable-select-trigger:hover {
+  background: #24344d;
+  border-color: #475569;
+}
+[data-theme="dark"] .searchable-select-menu {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+[data-theme="dark"] .searchable-select-search {
+  background: #0f172a;
+  border-bottom-color: #334155;
+}
+[data-theme="dark"] .searchable-select-search input {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+[data-theme="dark"] .searchable-select-option {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .searchable-select-option:hover {
+  background: #334155;
+  color: #60a5fa;
+}
+[data-theme="dark"] .searchable-select-option.selected {
+  background: #2563eb;
+  color: #ffffff;
+}
+[data-theme="dark"] .firm-projects-bar {
+  background: #1e293b;
+  border-color: #334155;
+}
+[data-theme="dark"] .project-chip {
+  background: #0f172a;
+  border-color: #334155;
+  color: #93c5fd;
+}
+[data-theme="dark"] .project-chip:hover {
+  background: #1e293b;
+  border-color: #3b82f6;
+}
+[data-theme="dark"] .project-chip.active {
+  background: #2563eb;
+  color: #ffffff;
+}
+[data-theme="dark"] .project-badge-tag {
+  background: #312e81;
+  color: #c7d2fe;
+}
+[data-theme="dark"] .firm-spending-summary-card {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+[data-theme="dark"] .firm-metric-box {
+  background: #1e293b;
+  border-color: #334155;
+}
+[data-theme="dark"] .firm-metric-lbl {
+  color: #94a3b8;
+}
+[data-theme="dark"] .firm-metric-val {
+  color: #f8fafc;
+}
+
+/* Edit Modal Projects List & Tag Styling */
+.edit-projects-container {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.edit-projects-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.edit-projects-header span {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.edit-projects-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+  min-height: 28px;
+  align-items: center;
+}
+
+.edit-project-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #c7d2fe;
+}
+
+.edit-project-remove-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.12);
+  color: #3730a3;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s;
+}
+
+.edit-project-remove-btn:hover {
+  background: #dc2626;
+  color: #fff;
+}
+
+.edit-project-add-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.edit-project-add-row input {
+  flex: 1;
+  height: 32px;
+  font-size: 11px;
+  padding: 0 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.edit-project-add-row input:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+[data-theme="dark"] .edit-projects-container {
+  background: #0f172a;
+  border-color: #334155;
+}
+[data-theme="dark"] .edit-projects-header span {
+  color: #94a3b8;
+}
+[data-theme="dark"] .edit-project-tag {
+  background: #1e1b4b;
+  border-color: #3730a3;
+  color: #c7d2fe;
+}
+[data-theme="dark"] .edit-project-remove-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #c7d2fe;
+}
+[data-theme="dark"] .edit-project-remove-btn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+[data-theme="dark"] .edit-project-add-row input {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+/* ══════════════════════════════════════════════════════════
+   Excel Export Modal with Firm Toggle Options
+   ══════════════════════════════════════════════════════════ */
+.export-modal {
+  width: min(720px, 100%);
+}
+
+.export-scope-toggle-bar {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.export-scope-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.export-scope-tab:hover {
+  color: #1e293b;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.export-scope-tab.active {
+  background: #ffffff;
+  color: #2563eb;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.export-firm-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.export-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.export-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.export-section-count {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* Firm Toggle Grid */
+.firm-toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+@media (max-width: 600px) {
+  .firm-toggle-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.firm-toggle-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.firm-toggle-card:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.firm-toggle-card.active {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+.firm-toggle-radio {
+  flex-shrink: 0;
+}
+
+.firm-radio-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid #94a3b8;
+  background: #ffffff;
+  transition: all 0.15s ease;
+}
+
+.firm-radio-circle.selected {
+  border-color: #2563eb;
+  background: #2563eb;
+}
+
+.firm-radio-inner {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.firm-toggle-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.firm-toggle-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.firm-toggle-card.active .firm-toggle-title {
+  color: #1d4ed8;
+}
+
+.firm-toggle-sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.firm-toggle-sub .spent-tag {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.firm-toggle-sub .dot-sep {
+  color: #cbd5e1;
+}
+
+/* Project Chips in Export */
+.export-project-filter-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.export-project-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.export-project-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.export-project-chip:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.export-project-chip.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.export-project-chip .chip-badge {
+  background: rgba(0, 0, 0, 0.08);
+  padding: 0 5px;
+  border-radius: 10px;
+  font-size: 9.5px;
+}
+
+.export-project-chip.active .chip-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Inclusions Checkbox Box */
+.export-inclusions-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.export-checkbox-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.export-chk-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #334155;
+  cursor: pointer;
+  user-select: none;
+}
+
+.export-chk-label input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+/* Summary Preview Card */
+.export-summary-preview {
+  background: #f8fafc;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.export-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 10px;
+}
+
+.export-preview-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11.5px;
+}
+
+.preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview-row span {
+  color: #64748b;
+}
+
+.preview-row strong {
+  color: #1e293b;
+  text-align: right;
+}
+
+.preview-row.filename {
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px dashed #cbd5e1;
+  flex-wrap: wrap;
+}
+
+.preview-row.filename code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  background: #ffffff;
+  border: 1px solid #c7d2fe;
+  color: #3730a3;
+  padding: 2px 6px;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+/* ── Dark Mode Overrides for Export Modal ── */
+[data-theme="dark"] .export-scope-toggle-bar {
+  background: #0f172a;
+}
+
+[data-theme="dark"] .export-scope-tab {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .export-scope-tab:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .export-scope-tab.active {
+  background: #1e293b;
+  color: #60a5fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .export-section-title {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .export-section-count {
+  color: #64748b;
+}
+
+[data-theme="dark"] .firm-toggle-card {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
+[data-theme="dark"] .firm-toggle-card:hover {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .firm-toggle-card.active {
+  background: #172554;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+[data-theme="dark"] .firm-radio-circle {
+  border-color: #475569;
+  background: #0f172a;
+}
+
+[data-theme="dark"] .firm-radio-circle.selected {
+  border-color: #3b82f6;
+  background: #3b82f6;
+}
+
+[data-theme="dark"] .firm-toggle-title {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .firm-toggle-card.active .firm-toggle-title {
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .firm-toggle-sub {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .export-project-filter-box {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
+[data-theme="dark"] .export-project-chip {
+  background: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .export-project-chip:hover {
+  background: #334155;
+}
+
+[data-theme="dark"] .export-project-chip.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .export-chk-label {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .export-summary-preview {
+  background: #0f172a;
+  border-color: #1e3a8a;
+}
+
+[data-theme="dark"] .export-preview-header {
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .preview-row span {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .preview-row strong {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .preview-row.filename {
+  border-top-color: #1e293b;
+}
+
+[data-theme="dark"] .preview-row.filename code {
+  background: #1e1b4b;
+  border-color: #3730a3;
+  color: #c7d2fe;
+}
+
+/* ══════════════════════════════════════════════════════════
+   Firm Assignment in Add/Edit Payment Modal
+   ══════════════════════════════════════════════════════════ */
+.firm-assignment-field {
+  background: #f8fafc;
+  border: 1.5px dashed #bfdbfe;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.firm-assignment-field .field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.optional-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  background: #e2e8f0;
+  padding: 2px 7px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.field-hint-text {
+  font-size: 11px;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Quick Firm Toggle Buttons */
+.quick-firm-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.quick-toggle-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-right: 2px;
+}
+
+.quick-firm-chip {
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.quick-firm-chip:hover {
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  background: #eff6ff;
+}
+
+.quick-firm-chip.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.25);
+}
+
+/* Searchable Firm Select */
+.searchable-firm-select-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.searchable-select-trigger.has-firm {
+  border-color: #93c5fd;
+  background: #ffffff;
+}
+
+.firm-pill-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+
+.firm-option-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.firm-option-content strong {
+  font-size: 12px;
+  color: inherit;
+}
+
+/* Selected Firm Notice & Project Row */
+.firm-selected-linked-box {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1px solid #c7d2fe;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: authFadeIn 0.2s ease-out;
+}
+
+.firm-linked-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: #166534;
+  background: #f0fdf4;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #bbf7d0;
+}
+
+.firm-project-select-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.firm-project-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+.firm-project-chips-scroll {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* Table Firm Badge */
+.firm-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 2px 7px;
+  border-radius: 6px;
+  max-width: 170px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .firm-assignment-field {
+  background: #0f172a;
+  border-color: #1e3a8a;
+}
+
+[data-theme="dark"] .optional-tag {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .field-hint-text {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .quick-toggle-title {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .quick-firm-chip {
+  background: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .quick-firm-chip:hover {
+  background: #334155;
+  border-color: #3b82f6;
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .quick-firm-chip.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .searchable-select-trigger.has-firm {
+  background: #1e293b;
+  border-color: #2563eb;
+}
+
+[data-theme="dark"] .firm-pill-badge {
+  background: #1e1b4b;
+  border-color: #3730a3;
+  color: #c7d2fe;
+}
+
+[data-theme="dark"] .firm-selected-linked-box {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .firm-linked-notice {
+  background: #064e3b;
+  border-color: #047857;
+  color: #6ee7b7;
+}
+
+[data-theme="dark"] .firm-project-lbl {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .firm-badge-tag {
+  background: #1e1b4b;
+  border-color: #3730a3;
+  color: #c7d2fe;
+}
+
+
+
+
 
 
 
